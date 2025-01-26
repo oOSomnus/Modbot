@@ -1,2 +1,2 @@
-# scalog
-Distribued log aggragator and analyzer
+# Modbot
+Distribued comment filter
