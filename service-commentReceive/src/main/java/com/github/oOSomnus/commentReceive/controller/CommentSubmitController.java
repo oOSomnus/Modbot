@@ -16,6 +16,6 @@ import java.util.List;
 public class CommentSubmitController {
     @PostMapping
     public CommentSubmitResponse submitComments(@RequestBody List<Comment> comments) {
-
+        return null;
     }
 }
