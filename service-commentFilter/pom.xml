@@ -10,7 +10,13 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>Comment Filter Service</name>
     <description>Distributed comment filter</description>
-
+    <dependencies>
+        <dependency>
+            <groupId>com.github.oOSomnus</groupId>
+            <artifactId>common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>

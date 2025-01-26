@@ -1,0 +1,17 @@
+management:
+  server:
+    port: 8082
+  endpoints:
+    jmx:
+      exposure:
+        include: *
+    web:
+      exposure:
+        include: *
+  endpoint:
+    health:
+      show-details: always
+  prometheus:
+    metrics:
+      export:
+        enabled: true

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 定义公共字段（可选） -->
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+    <property name="LOG_DIR" value="logs"/>
+    <springProperty name="SERVICE_NAME" source="spring.application.name" defaultValue="unknown-service"/>
+    <springProperty name="SERVICE_ENV" source="spring.profiles.active" defaultValue="local"/>
+
+    <!-- 控制台输出（调试用） -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 输出到文件（JSON 格式，供 ELK 采集） -->
+    <appender name="LOGSTASH" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/app-json.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/app-json.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <!-- 使用 LogstashEncoder 输出 JSON -->
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <!-- 自定义固定字段（如服务名、环境） -->
+            <customFields>{"service": ${SERVICE_NAME}, "env": ${SERVICE_ENV}}</customFields>
+            <!-- 包含 MDC 上下文（可选） -->
+            <includeMdc>true</includeMdc>
+            <!-- 包含调用栈信息（可选） -->
+            <includeStackTrace>true</includeStackTrace>
+        </encoder>
+    </appender>
+
+    <!-- 日志级别配置 -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>  <!-- 保留控制台输出 -->
+        <appender-ref ref="LOGSTASH"/> <!-- 输出 JSON 到文件 -->
+    </root>
+
+    <!-- 按包或类配置日志级别 -->
+    <logger name="com.example" level="DEBUG"/>
+</configuration>

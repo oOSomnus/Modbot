@@ -18,6 +18,7 @@
         <module>service-commentStorage</module>
         <module>service-commentFilter</module>
         <module>service-commentReceive</module>
+        <module>common</module>
     </modules>
     <dependencies>
         <dependency>
@@ -39,10 +40,38 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.4.14</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>7.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
     <dependencyManagement>
@@ -82,6 +111,40 @@
                         <goals>
                             <goal>repackage</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <!-- 下载 Javadoc -->
+                    <execution>
+                        <id>download-javadoc</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal> <!-- 目标名称正确 -->
+                        </goals>
+                        <configuration>
+                            <classifier>javadoc</classifier> <!-- 指定下载 Javadoc -->
+                            <outputDirectory>${project.build.directory}/javadoc</outputDirectory> <!-- 指定输出目录 -->
+                            <includeScope>compile</includeScope> <!-- 可选：限定作用域 -->
+                            <overWriteReleases>false</overWriteReleases> <!-- 可选：避免覆盖 -->
+                            <overWriteSnapshots>true</overWriteSnapshots> <!-- 可选：允许覆盖快照 -->
+                        </configuration>
+                    </execution>
+                    <!-- 下载源码 -->
+                    <execution>
+                        <id>download-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>sources</classifier> <!-- 指定下载源码 -->
+                            <outputDirectory>${project.build.directory}/sources</outputDirectory>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

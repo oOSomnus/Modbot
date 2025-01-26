@@ -1,0 +1,30 @@
+management:
+  server:
+    port: 8083
+  endpoints:
+    jmx:
+      exposure:
+        include: *
+    web:
+      exposure:
+        include: *
+  endpoint:
+    health:
+      show-details: always
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+spring:
+  kafka:
+    bootstrap-servers:
+      localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.JsonSerializer
+#    consumer:
+#      group-id: comment-submit-group
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+#      properties:
+#        spring.json.trusted.packages: "com.github.oOSomnus.commentReceive.model.*"
